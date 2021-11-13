@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import entities.enums.WorkerLevel;
@@ -58,18 +59,35 @@ public class Worker {
 	public void RemoveContracts(HourContracts contracts) {
 		contract.remove(contracts);
 	}
-	public double income(int year, int month) {
-		
-		double som = baseSalary;
-		Calendar cal = Calendar.getInstance();
-		for(HourContracts x : contract) {
-			int x_year = cal.get(Calendar.YEAR);
-			int x_month = cal.get(Calendar.MONTH);
-			if(year == x_year && month == x_month) {
-			som+= x.totalValue();
-			}
+	public double income(Date yearAndMonth) {
+	double som = baseSalary;
+	Calendar cal = Calendar.getInstance();
+	Calendar cal1 = Calendar.getInstance();
+	cal1.setTime(yearAndMonth);
+	int year = cal1.get(Calendar.YEAR);
+	int month = cal1.get(Calendar.MONTH);
+	for(HourContracts x : contract) {
+		cal.setTime(x.getDate());
+		int x_year = cal.get(Calendar.YEAR);
+		int x_month = cal.get(Calendar.MONTH);
+		if(year == x_year && month == x_month) {
+		som+= x.totalValue();
 		}
-		return som;
 	}
+	return som;
+}
+/*public double income(int year, int month) {
+double sum = baseSalary;
+Calendar cal = Calendar.getInstance();
+for (HourContracts c : contract) {
+	cal.setTime(c.getDate());
+	int c_year = cal.get(Calendar.YEAR);
+	int c_month = 1 + cal.get(Calendar.MONTH);
+	if (year == c_year && month == c_month) {
+		sum += c.totalValue();
+	}
+}
+return sum;
+}*/
 
 }
